@@ -12,9 +12,10 @@
 <div class="tabs">
 <ul>
 <% tabs.each do |tab| -%>
-    <li><%= link_to l(tab[:label]), { :tab => tab[:name] },
+    <li><%= link_to l(tab[:label]), { :tab => tab[:name], :anchor => tab[:name] },
                                     :id => "tab-#{tab[:name]}",
-                                    :class => (tab[:name] != selected_tab ? nil : 'selected')%></li>
+                                    :class => (tab[:name] != selected_tab ? nil : 'selected'),
+                                    :name => tab[:name] %></li>
 <% end -%>
 </ul>
 </div>
