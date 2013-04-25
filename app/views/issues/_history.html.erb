@@ -12,23 +12,24 @@
 <div class="tabs">
 <ul>
 <% tabs.each do |tab| -%>
-    <li><%= link_to l(tab[:label]), { :tab => tab[:name] },
+    <li><%= link_to l(tab[:label]), { :tab => tab[:name], :anchor => tab[:name] },
                                     :id => "tab-#{tab[:name]}",
-                                    :class => (tab[:name] != selected_tab ? nil : 'selected')%></li>
+                                    :class => (tab[:name] != selected_tab ? nil : 'selected'),
+                                    :name => tab[:name] %></li>
 <% end -%>
 </ul>
 </div>
 
 <% reply_links = authorize_for('issues', 'edit') -%>
 <% for journal in journals %>
-<% if selected_tab == 'history_all' || journal.css_classes == 'journal has-notes'%>
+<% if selected_tab == 'history_all' || journal.css_classes =~ /.*has-notes.*/ %>
   <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
     <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
     <%= avatar(journal.user, :size => "24") %>
     <%= content_tag('a', '', :name => "note-#{journal.indice}")%>
     <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
 
-    <% if journal.details.any? %>
+    <% if journal.details.any? && selected_tab == 'history_all' %>
     <ul class="details">
       <% details_to_strings(journal.details).each do |string| %>
        <li><%= string %></li>
